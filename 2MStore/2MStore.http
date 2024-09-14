@@ -1,0 +1,6 @@
+@_2MStore_HostAddress = http://localhost:5120
+
+GET {{_2MStore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
