@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace _2MStore.Models.Models
 {
-    internal class Ads
+    public class Ads
     {
+
     }
 }

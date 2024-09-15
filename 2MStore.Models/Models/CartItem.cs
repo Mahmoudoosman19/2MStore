@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _2MStore.Models.Models
+﻿namespace _2MStore.Models.Models
 {
-    internal class CartItem
+    public class CartItem
     {
+        public int CartItemId { get; set; }
+        public int Quantity { get; set; }
+
+
+        public int CartId { get; set; }
+        public Cart cart { get; set; }
+
+
+
+        public virtual ICollection<Product> products { get; set;}
+        //        CartItemId: Primary key.
+        //CartId: Foreign key.
+        //ProductId: Foreign key.
+        //Quantity
     }
 }

@@ -1,4 +1,6 @@
 using _2MStore;
+using _2MStore.DAL.Context;
+using Microsoft.EntityFrameworkCore;
 namespace _2MStore
 {
     public class Program
@@ -14,7 +16,18 @@ namespace _2MStore
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+
+
+            #region build Connection DB
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                {
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                });
+
+            var app = builder.Build(); 
+            #endregion
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

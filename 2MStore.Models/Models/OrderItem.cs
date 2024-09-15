@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _2MStore.Models.Models
+﻿namespace _2MStore.Models.Models
 {
-    internal class OrderItem
+    public class OrderItem
     {
+        public int OrderItemId { get; set; }
+        public int ProductId { get; set; }
+        public int OrderId { get; set; }
+        public int Quantity { get; set; }
+        public decimal PriceAtPurchase { get; set; }
+
+
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
+
+
+        //        OrderItemId: Primary key.
+        //OrderId: Foreign key.
+        //ProductId: Foreign key.
+        //Quantity
+        //PriceAtPurchase
     }
 }

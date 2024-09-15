@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace _2MStore.Models.Models
 {
-    internal class Cart
+    public class Cart
     {
+        public int CartId { get; set; }
+        public int UserId { get; set; }
     }
 }

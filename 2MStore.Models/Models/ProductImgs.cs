@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace _2MStore.Models.Models
 {
-    internal class ProductImgs
+    public class ProductImgs
     {
+        public int ImgId { get; set; }
+        public string ImgPath { get; set; }
+
+
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
+
+        public Product Product { get; set; }
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2MStore.Models.Models
 {
-    internal class WishList
+    public class WishList
     {
     }
 }

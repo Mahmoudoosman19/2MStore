@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace _2MStore.Models.Models
 {
-    internal class ProductDetails
+    public class ProductDetails
     {
+        public int PDetailID { get; set; }
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public string Color { get; set; }
+        public string? OtherFeatures { get; set; }
+
+        [ForeignKey("product")]
+        public int ProductId { get; set; }
+
+
+        public Product product { get; set; }
     }
 }
