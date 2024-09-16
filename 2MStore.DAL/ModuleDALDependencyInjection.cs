@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _2MStore.DAL
+﻿namespace _2MStore.DAL
 {
-    class ModuleDAL
+    public class static ModuleDALDependencyInjection
     {
+
+
     }
 }

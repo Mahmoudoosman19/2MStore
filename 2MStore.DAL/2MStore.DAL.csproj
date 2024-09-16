@@ -8,18 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Generic Repository\GenericRepository.cs" />
+    <Compile Remove="Implementation\**" />
+    <Compile Remove="IRepository\**" />
+    <EmbeddedResource Remove="Implementation\**" />
+    <EmbeddedResource Remove="IRepository\**" />
+    <None Remove="Implementation\**" />
+    <None Remove="IRepository\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="ModuleDALDependencyInjection.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Implementation\" />
-    <Folder Include="IRepository\" />
-    <Folder Include="Repository\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Generic Repository\GenericRepository.cs" />
     <None Include="ModuleDALDependencyInjection.cs" />
   </ItemGroup>
 

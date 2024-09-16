@@ -2,6 +2,13 @@
 {
     public class OrderItem
     {
+
+        public OrderItem()
+        {
+            Orders = new List<Order>();
+            Products = new List<Product>();
+
+        }
         public int OrderItemId { get; set; }
         public int ProductId { get; set; }
         public int OrderId { get; set; }

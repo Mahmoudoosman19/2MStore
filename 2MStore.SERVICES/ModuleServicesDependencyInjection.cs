@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2MStore.DAL.Generic_Repository
+namespace _2MStore.DAL
 {
-    internal interface IGenericRepository
+    class ModuleDAL
     {
     }
 }

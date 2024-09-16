@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _2MStore.Models.Models
+﻿namespace _2MStore.Models.Models
 {
     public class Cart
     {
+        public Cart()
+        {
+            CartItems = new List<CartItem>();
+        }
         public int CartId { get; set; }
         public int UserId { get; set; }
+        public virtual ICollection<CartItem> CartItems { get; set; }
+
+
     }
 }

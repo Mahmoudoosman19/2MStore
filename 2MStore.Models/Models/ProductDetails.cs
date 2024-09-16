@@ -10,10 +10,9 @@ namespace _2MStore.Models.Models
         public string Color { get; set; }
         public string? OtherFeatures { get; set; }
 
+
         [ForeignKey("product")]
         public int ProductId { get; set; }
-
-
-        public Product product { get; set; }
+        public virtual Product product { get; set; }
     }
 }
