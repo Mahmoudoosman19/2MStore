@@ -1,0 +1,170 @@
+﻿@using Project.BLL.Dtos.Product
+@model EditProductDto
+
+
+
+@{
+    ViewData["Title"] = "Update Product";
+}
+
+<div class="addProd container bg-dark shadow m-4">
+
+    <h2 class="text-success">Update Product</h2>
+    <form method="post" asp-action="Edit" enctype="multipart/form-data">
+
+        <div class="row">
+            <input hidden asp-for="Id" />
+
+            <div class="col-6">
+                <div>
+                    <label asp-for="Name" class="form-label text-white mt-4"></label>
+                    <input asp-for="Name" class="form-control text-white" placeholder="Enter Product">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>           <div>
+                    <label asp-for="PriceBeforeDiscount" class="form-label text-white mt-4">Price</label>
+                    <input asp-for="PriceBeforeDiscount" type="number" class="form-control text-white" placeholder="Enter Price" id="price">
+                    <span asp-validation-for="PriceBeforeDiscount" class="text-danger"></span>
+                </div>           <div>
+                    <label asp-for="Discount" class="form-label text-white mt-4">Discount</label>
+                    <input asp-for="Discount" type="number" class="form-control   text-white" placeholder="Enter Discount" id="discount">
+                    <span asp-validation-for="Discount" class="text-danger"></span>
+                </div>
+
+
+
+
+            </div>
+
+            <div class="col-6">
+                <div>
+                    <label asp-for="Brand" class="form-label text-white mt-4"></label>
+                    <select asp-for="BrandId" class="form-control text-white" asp-items="@(ViewBag.Brands)"></select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Category" class="form-label text-white mt-4"></label>
+                    <select asp-for="CategoryId" class="form-control text-white" asp-items="@(ViewBag.Categories)"></select>
+
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Count" class="form-label text-white mt-4">Quantity</label>
+                    <input asp-for="Count" class="form-control  text-white" placeholder="Enter Quantity">
+                    <span asp-validation-for="Count" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div>
+
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" rows="4" placeholder="Enter your Description" class="w-100 text-white p-2"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+
+            <!-- File Upload Section -->
+            <div class="file-upload w-75 m-auto" id="drop-area">
+                <img src="~/Images/cloud.png" alt="Upload Icon">
+                <p>Drop File Here Or <label asp-for="Url" style="color:#0d6efd; cursor: pointer;">Click To Upload</label></p>
+                <input asp-for="Url" type="file" id="Url"> <!-- Hide the file input -->
+                <span asp-validation-for="Url" class="text-danger"></span>
+                <div class="preview">
+                    <img id="preview-img" src="@Model.PictureUrl" alt="File Preview" style="width: 200px;" /> <!-- Preview image -->
+                    <input hidden asp-for="PictureUrl" />
+
+                </div>
+            </div>
+
+            <div class="file-upload w-75 m-auto mt-3 bg-info" id="drop-area">
+                <img src="~/Images/cloud.png" alt="Upload Icon">
+                <p>Drop File Here Or <label asp-for="ImagesUrl" style="color:#0d6efd; cursor: pointer;">Click To Upload Images</label></p>
+                <input asp-for="ImagesUrl" type="file" multiple>
+                <span asp-validation-for="ImagesUrl" class="text-danger"></span>
+                <div class="previewGroup">
+                    @foreach (var item in Model.Images)
+                    {
+
+                        <img src="@item.Name" style="width:200px" />
+                    }
+
+                    @for (int i = 0; i < Model.Images.Count; i++)
+                    {
+                        <input type="hidden" asp-for="Images[i]" />
+                    }
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-cancel me-3 btn-lg">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">Save</button>
+            </div>
+
+
+        </div>
+
+
+
+
+
+    </form>
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $(document).ready(function () {
+            $("#Url").on('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const imgUrl = window.URL.createObjectURL(file);
+                    $("#preview-img").attr('src', imgUrl);
+                    // $("PictureUrl").addClass('d-none')// Show the image
+                }
+            });
+        });
+
+
+        $(document).ready(function () {
+            $("#ImagesUrl").on('change', function () {
+                $(".previewGroup").empty(); // Clear any previous previews
+
+                const files = this.files; // Get selected files
+                if (files.length === 0) return; // If no files selected, stop
+
+                // Loop through each file and create an image element for preview
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+
+                    // Ensure the file is an image (optional but recommended)
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please upload only images');
+                        continue;
+                    }
+
+                    const imageUrl = window.URL.createObjectURL(file);
+
+                    const img = $("<img>")
+                        .attr('src', imageUrl)
+                        .attr('class', 'img-thumbnail previewImage')
+                        .css({
+                            'width': '150px',
+                            'height': '150px',
+                            'margin': '10px'
+                        });
+
+                    $(".previewGroup").append(img); // Add the image preview to the group
+                }
+            });
+        });
+
+    </script>
+}

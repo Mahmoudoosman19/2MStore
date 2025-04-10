@@ -1,0 +1,105 @@
+﻿@using Project.BLL.Dtos.Authentication
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@model LoginDto
+
+<section class="m-auto mt-5">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                       <h1 class="text-white">Welcome Back! Please Sign In</h1>
+
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     class="img-fluid" alt="Sample image">
+            </div>
+
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <label class="form-label  text-white  ">Email</label>
+
+                        <input asp-for="EmailOrUserName" class="form-control bg-white    form-control-lg"
+                               placeholder="email address Or UserName " />
+                        <span asp-validation-for="EmailOrUserName" class="text-danger"></span>
+                    </div>
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                            <label asp-for="Password" class="form-label text-white mt-4"></label>
+                            <div class="input-group">
+                                <input asp-for="Password" class="form-control text-white bg-dark" type="password" id="currentPassword" placeholder="Enter Password">
+                                <span class="input-group-text bg-dark" onclick="togglePassword('currentPassword')">
+                                    <i class="fa fa-eye text-white" id="toggleCurrentPassword"></i>
+                                </span>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        
+                        
+                        
+                        
+      
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Checkbox -->
+                        <div class="form-check mb-0">
+                            <input class="form-check-input bg-info me-2" asp-for="IsRememberMe" />
+                            <label class="form-check-label  text-white " asp-for="IsRememberMe">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="m-2">
+                        <recaptcha />
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" id="loginForm" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Login
+                        </button>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">
+                            <a asp-action="Register"
+                               class="link-danger  text-white"></a>
+                        </p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function togglePassword(fieldId) {
+            var passwordField = document.getElementById(fieldId);
+            var toggleIcon = document.getElementById('toggle' + capitalizeFirstLetter(fieldId));
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    </script>
+}

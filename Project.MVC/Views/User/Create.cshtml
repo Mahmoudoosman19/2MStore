@@ -1,0 +1,178 @@
+﻿@using Project.BLL.Dtos.Account
+@model RegisterDto
+@{
+    ViewData["Title"] = "Create User";
+}
+<section>
+    <div class="container">
+ 
+        <div class="row d-flex justify-content-center align-items-center">
+            
+            <div class="col-lg-12 col-xl-11 mt-5">
+                <div class="card text-white bg-dark" style="border-radius: 25px;">
+                    <h1 class="text-center p-2 text-primary fw-semibold">Registation</h1>
+
+                    <div class="card-body p-md-5">
+                        <form method="post" asp.action="Create" class="mx-1 mx-md-4">
+                            @if (ViewBag.error != null)
+                            {
+                                foreach (var key in ViewBag.error.Keys)
+                                {
+                                    dynamic errorList = ViewBag.error[key];
+
+                                    if (errorList != null)
+                                    {
+                                        foreach (var error in errorList)
+                                        {
+
+                                            <div class="text-danger mb-3 text-center fs-5">
+                                                @error
+                                            </div>
+
+                                        }
+                                    }
+                                }
+                            }
+                         
+                            <div class="row justify-content-center">
+                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                                
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                <label class="form-label" asp-for="FirstName"></label>
+                                                <input asp-for="FirstName" class="form-control text-white" />
+                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                <label class="form-label" asp-for="UserName"></label>
+                                                <input asp-for="UserName" class="form-control text-white" />
+                                                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label asp-for="Password" class="form-label text-white mt-4"></label>
+                                            <div class="input-group">
+                                                <input asp-for="Password" class="form-control text-white bg-dark" type="password" id="password" placeholder="Enter Password">
+                                                <span class="input-group-text bg-dark" onclick="togglePassword('password')">
+                                                    <i class="fa fa-eye text-white" id="togglePassword"></i>
+                                                </span>
+                                            </div>
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                <label class="form-label" asp-for="Phone"></label>
+                                                <input asp-for="Phone" class="form-control text-white" />
+                                                <span asp-validation-for="Phone" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                <label class="form-label" asp-for="City"></label>
+                                                <input asp-for="City" class="form-control text-white" />
+                                                <span asp-validation-for="City" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label class="form-label" asp-for="LastName"></label>
+                                            <input asp-for="LastName" class="form-control text-white" />
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label class="form-label" asp-for="Email"></label>
+                                            <input asp-for="Email" class="form-control text-white" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label asp-for="ConfirmPassword" class="form-label text-white mt-4"></label>
+                                            <div class="input-group">
+                                                <input asp-for="ConfirmPassword" class="form-control text-white bg-dark" type="password" id="confirmPassword" placeholder="Enter Confirm Password">
+                                                <span class="input-group-text bg-dark" onclick="togglePassword('confirmPassword')">
+                                                    <i class="fa fa-eye text-white" id="toggleConfirmPassword"></i>
+                                                </span>
+                                            </div>
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label class="form-label" asp-for="Country"></label>
+                                            <input asp-for="Country" class="form-control text-white" />
+                                            <span asp-validation-for="Country" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                            <label class="form-label" asp-for="Street"></label>
+                                            <input asp-for="Street" class="form-control text-white" />
+                                            <span asp-validation-for="Street" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <a asp-action="Index" class="btn btn-cancel me-3 btn-lg">Cancel</a>
+                                <button type="submit" class="btn btn-primary btn-lg">Add User</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function togglePassword(fieldId) {
+            var passwordField = document.getElementById(fieldId);
+            var toggleIcon = document.getElementById('toggle' + capitalizeFirstLetter(fieldId));
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    </script>
+}
+

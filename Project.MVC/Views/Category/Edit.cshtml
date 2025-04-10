@@ -1,0 +1,71 @@
+﻿@using Project.BLL.Dtos.Product
+@model ProductBrandOrCategoryEditDto
+@inject IWebHostEnvironment WebHostEnvironment ;
+
+
+@{
+    ViewData["Title"] = "Add Category";
+}
+<div class="addProd container bg-dark shadow m-4">
+
+    <h2 class="text-white">New Category</h2>
+    <form method="post" asp-action="Edit" asp-controller="Category" enctype="multipart/form-data">
+
+        <div class="row">
+            <div class="col-6 m-auto mb-2">
+                <div>
+                    <label asp-for="Name" class="form-label text-white mt-4"></label>
+                    <input asp-for="Name" class="form-control text-white bg-dark" placeholder="Enter Category">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="file-upload w-75 m-auto" id="drop-area">
+                <img src="~/Images/cloud.png" alt="Upload Icon">
+                <p>Drop File Here Or <label asp-for="Url" style="color:#0d6efd; cursor: pointer;">Click To Upload</label></p>
+                <input asp-for="Url" type="file" id="Url" style="display: none;"> 
+                <span asp-validation-for="Url" class="text-danger"></span>
+                <div class="preview">
+
+                    @{
+                        var fileName = System.IO.Path.GetFileName(Model.PictureUrl);
+                        var CategoryImagePath = System.IO.Path.Combine(WebHostEnvironment.WebRootPath, "Images/products", fileName);
+
+                        if (!string.IsNullOrEmpty(Model.PictureUrl) && System.IO.File.Exists(CategoryImagePath))
+                        {
+                            <img id="preview-img" src="@Model.PictureUrl" style="width: 150px;" />
+                        }
+                        else
+                        {
+                            <img id="preview-img" src="~/Images/images.png" style="width: 150px;" />
+                        }
+                    }
+
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-cancel me-3 btn-lg">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">Save</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $(document).ready(function () {
+           $("#Url").on('change', function () {
+               const file = this.files[0];
+               if (file) {
+                   const imgUrl = window.URL.createObjectURL(file);
+                   $("#preview-img").attr('src', imgUrl);
+               }
+           });
+        });
+    </script>
+}

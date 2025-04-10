@@ -1,0 +1,56 @@
+[
+  {
+    "Name": "Angular Speedster Board 2000",
+    "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+    "PriceBeforeDiscount": 200,
+    "Discount": 10,
+    "PictureUrl": "sb-ang1.png",
+    "CategoryId": 2,
+    "BrandId": 3
+  },
+  {
+    "Name": "Green Angular Board 3000",
+    "Description": "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",
+    "PriceBeforeDiscount": 150,
+    "Discount": 10,
+    "PictureUrl": "sb-ang2.png",
+    "CategoryId": 3,
+    "BrandId": 2
+  },
+  {
+    "Name": "Core Board Speed Rush 3",
+    "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
+    "PriceBeforeDiscount": 180,
+    "Discount": 10,
+    "PictureUrl": "sb-core1.png",
+    "CategoryId": 4,
+    "BrandId": 4
+  },
+  {
+    "Name": "Net Core Super Board",
+    "Description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.",
+    "PriceBeforeDiscount": 300,
+    "Discount": 10,
+    "PictureUrl": "sb-core2.png",
+    "CategoryId": 2,
+    "BrandId": 1
+  },
+  {
+    "Name": "React Board Super Whizzy Fast",
+    "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+    "PriceBeforeDiscount": 250,
+    "Discount": 10,
+    "PictureUrl": "sb-react1.png",
+    "CategoryId": 1,
+    "BrandId": 2
+  },
+  {
+    "Name": "Typescript Entry Board",
+    "Description": "Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.",
+    "PriceBeforeDiscount": 120,
+    "Discount": 10,
+    "PictureUrl": "sb-ts1.png",
+    "CategoryId": 3,
+    "BrandId": 5
+  }
+]

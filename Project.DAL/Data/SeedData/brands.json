@@ -1,0 +1,37 @@
+[
+  {
+    "Name": "Angular",
+    "PictureUrl": "sb-ang1.png"
+
+  },
+  {
+
+    "Name": "NetCore",
+    "PictureUrl": "sb-ang1.png"
+
+  },
+  {
+
+    "Name": "VS Code",
+    "PictureUrl": "sb-ang1.png"
+
+  },
+  {
+
+    "Name": "React",
+    "PictureUrl": "sb-ang1.png"
+
+  },
+  {
+
+    "Name": "Typescript",
+    "PictureUrl": "sb-ang1.png"
+
+  },
+  {
+
+    "Name": "Redis",
+    "PictureUrl": "sb-ang1.png"
+
+  }
+]

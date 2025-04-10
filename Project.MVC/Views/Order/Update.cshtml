@@ -1,0 +1,167 @@
+﻿@using Project.BLL.Dtos
+@model OrderToReturnDto
+
+
+
+@{
+    ViewData["Title"] = "Update Order";
+    var Tracks = (Dictionary<int , string>)ViewBag.Tracking;
+}
+
+<div class="addProd container bg-dark shadow m-4">
+
+    <h2 class="text-white text-center">Update Tracking</h2>
+    <form method="post" asp-action="Update">
+             <div class="d-flex justify-content-center mt-4"> 
+            <select asp-for="OrderTrackingStatus" class="form-select text-white w-25  text-center mb-2 mb-md-0 ms-md-2">
+                @foreach (var tracking in Tracks)
+                {
+                    @if (Model.OrderTrackingStatus == tracking.Value.ToString())
+                    {
+                        <option value="@tracking.Key" class="text-primary" selected>
+                            @tracking.Value
+
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@tracking.Key">
+                            @tracking.Value
+                        </option>
+                    }
+
+                }
+            </select>
+             </div>
+        <div class="row">
+
+
+            <input hidden asp-for="Id" />
+
+            <div class="col-6">
+                <div>
+                    <label asp-for="BuyerEmail" class="form-label text-white mt-4"></label>
+                    <input asp-for="BuyerEmail" readonly class="form-control text-secondary" placeholder="Enter Product">
+                </div>      
+                <div>
+                    <label asp-for="ShippingAddress.FirstName" class="form-label text-white mt-4"></label>
+                    <input asp-for="ShippingAddress.FirstName" readonly  class="form-control text-secondary" >
+                </div>        
+                <div>
+                    <label asp-for="ShippingAddress.LastName" class="form-label text-white mt-4"></label>
+                    <input asp-for="ShippingAddress.LastName" readonly  class="form-control   text-secondary" >
+                </div>
+                 <div>
+                    <label asp-for="ShippingAddress.Street" class="form-label text-white mt-4"></label>
+                    <input asp-for="ShippingAddress.Street" readonly  class="form-control   text-secondary">
+                </div>     
+
+
+
+
+            </div>
+
+            <div class="col-6">
+
+
+                <div>
+                    <label asp-for="DeliveryMethod" class="form-label text-white mt-4">City</label>
+                    <input asp-for="DeliveryMethod" readonly class="form-control  text-secondary">
+                </div>      
+
+                <div>
+                    <label asp-for="DeliveryMethodCost" class="form-label text-white  mt-4">Delivery Cost</label>
+                    <input asp-for="DeliveryMethodCost" readonly class="form-control  text-secondary"></input>
+                </div>
+                <div>
+                    <label asp-for="Total" class="form-label text-white  mt-4"></label>
+                    <input asp-for="Total" readonly class="form-control  text-secondary"></input>
+                </div>
+
+                
+                <div>
+                 
+                    <label asp-for="Status" class="form-label text-white mt-4"></label>
+                    @if (Model.Status == "Pending"){
+                        <input asp-for="Status" readonly class="form-control text-warning">
+                    } else if (Model.Status=="Payment Failed")
+                    {
+                        <input asp-for="Status" readonly class="form-control text-danger">
+                    }
+                    else
+
+                    {
+                        <input asp-for="Status" readonly class="form-control text-success">
+
+                    }
+                </div>
+
+            </div>
+            </div>
+
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-cancel me-3 btn-lg">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">Save</button>
+            </div>
+
+    </form>
+
+        </div>
+
+
+
+ 
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $(document).ready(function () {
+            $("#Url").on('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const imgUrl = window.URL.createObjectURL(file);
+                    $("#preview-img").attr('src', imgUrl);
+                    // $("PictureUrl").addClass('d-none')// Show the image
+                }
+            });
+        });
+
+
+        $(document).ready(function () {
+            $("#ImagesUrl").on('change', function () {
+                $(".previewGroup").empty(); // Clear any previous previews
+
+                const files = this.files; // Get selected files
+                if (files.length === 0) return; // If no files selected, stop
+
+                // Loop through each file and create an image element for preview
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+
+                    // Ensure the file is an image (optional but recommended)
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please upload only images');
+                        continue;
+                    }
+
+                    const imageUrl = window.URL.createObjectURL(file);
+
+                    const img = $("<img>")
+                        .attr('src', imageUrl)
+                        .attr('class', 'img-thumbnail previewImage')
+                        .css({
+                            'width': '150px',
+                            'height': '150px',
+                            'margin': '10px'
+                        });
+
+                    $(".previewGroup").append(img); // Add the image preview to the group
+                }
+            });
+        });
+
+    </script>
+}

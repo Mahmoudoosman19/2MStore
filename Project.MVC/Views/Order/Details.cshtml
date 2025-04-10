@@ -1,0 +1,182 @@
+﻿@using Project.BLL.Dtos
+@using Project.DAL.Entities.Identity
+@{
+    Layout = "~/Views/Shared/_ProductLayout.cshtml";
+}
+
+
+@{
+    ViewData["Title"] = "Order Details";
+    var user = ViewBag.user as ApplicationUser;
+}
+@model OrderToReturnDto
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+
+
+
+<div class="container-fluid p-2">
+    <!-- Search and Filter Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class=" row bg-dark">
+                <h5 class="text-white mb-2 mb-md-0">Order Details</h5>
+               
+               
+                <div class="card-body cardb col-7">
+                    <table class="table text-white">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Image</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                      
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Items)
+                            {
+                                <tr>
+                                    <td>@product.ProductName</td>
+                                    <td>
+                                        @{
+                                            var fileName = System.IO.Path.GetFileName(product.PictureUrl);
+                                            var productImagePath = System.IO.Path.Combine(WebHostEnvironment.WebRootPath, "Images/products", fileName);
+
+
+                                            if (!string.IsNullOrEmpty(product.PictureUrl) && System.IO.File.Exists(productImagePath))
+                                            {
+
+
+                                                <img class="prod_img" src="@product.PictureUrl" width="50" height="50" />
+                                            }
+                                            else
+                                            {
+                                                <img class="prod_img" src="~/Images/images.png" width="50" height="50" />
+
+                                            }
+                                        }
+                                    </td>
+
+                                    <td>@Math.Round(product.Price, 2)</td>
+       
+                                    <td>@product.Quantity</td>
+                                 
+                              
+                                   
+                                </tr>
+                            }
+                        </tbody>
+                     
+                    </table>
+                    <div class="text-white">
+                            <h5>
+                                Subtotal: <span class="">@Model.SubTotal$</span>
+                            </h5>
+                            <h5>
+                                Delivery Cost: <span class="">@Model.DeliveryMethodCost$</span>
+                            </h5>
+                            <h5>
+                                Total: <span class="">@Model.Total$</span>
+                            </h5>
+
+                    </div>
+                </div>
+                
+                <div class="col-3 card-body">
+                    <div class="text-center cardb">
+
+
+                        <h2 class="text-warning mb-3">
+                            Customer details
+                        </h2>
+                        <h3 class="text-white ">@user.UserName</h3>
+                        <p><b class="text-white">City: </b><span class="text-white">@user.City</span></p>
+                        <h5 class="text-white">Contact Info</h5>
+
+                        <p><b class="text-white">Email: </b><a href="mailto:@user.Email" class="text-white email-link">@user.Email</a></p>
+                        <p><b class="text-white">Mobile: </b><span class="text-white">@user.PhoneNumber</span></p>
+
+
+
+                    </div>
+                    <div class="text-center  cardb">
+
+
+                        <h2 class="text-warning mb-3">
+                            Shipping address
+
+                        </h2>
+                        <h3 class="text-white ">@Model.ShippingAddress.FirstName @Model.ShippingAddress.LastName</h3>
+                        <p><b class="text-white">City: </b><span class="text-white">@Model.ShippingAddress.City</span></p>
+                        <p><b class="text-white">Street: </b><span class="text-white">@Model.ShippingAddress.City</span></p>
+
+
+
+                    </div> 
+                    <div class="text-center  cardb">
+
+
+                        <h2 class="text-warning mb-3">
+                             Status
+
+                        </h2>
+                        <p>
+                            <b class="text-white">Status: </b>
+                       
+                                @if(Model.Status == "Pending")
+                                {
+
+                                <span class="badge text-dark rounded-pill bg-warning">@Model.Status</span>
+                                }
+                                else if(Model.Status == "Payment Failed")
+                                {
+                                    
+                                        <span class="badge rounded-pill bg-danger">@Model.Status</span>
+                                    
+                                }
+                                else
+                                {
+                                        <span class="badge rounded-pill bg-success">@Model.Status</span>
+                                }
+                        </p>
+                        
+                        <p>
+                            <b class="text-white">Tracking: </b>
+
+                            @if (Model.OrderTrackingStatus == "In Stock")
+                            {
+                                <span class="badge text-dark rounded-pill bg-warning">@Model.OrderTrackingStatus</span>
+                            }
+                            else if (Model.OrderTrackingStatus == "Shipped")
+                            {
+
+                                <span class="badge rounded-pill bg-danger">@Model.OrderTrackingStatus</span>
+
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill bg-success">@Model.OrderTrackingStatus</span>
+                            }
+                        </p>
+                         <div class="d-flex justify-content-around">
+
+                            <a asp-action="Index"><img src="/Images/back.png" width="30" height="30"></a>
+                            <a asp-route-id="@Model.Id" asp-action="Update"><img src="/Images/updated_5625789.png" width="30" height="30"></a>
+
+                         </div>
+                       </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+

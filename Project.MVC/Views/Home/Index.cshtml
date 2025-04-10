@@ -1,0 +1,175 @@
+﻿@using Project.API.Helpers
+@using Project.BLL.Dtos.Account
+@using Project.BLL.Dtos.Product 
+@using Project.DAL.Entities.Identity
+@model Pagination<ProductsToReturnDto> ;
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+
+@{
+    ViewData["Title"] = "Home Page";
+    var Users = ViewBag.Users as Pagination<GetAllUsersDto>;
+
+}
+
+<div class="container mt-4" >
+    <div class="card-body bg-dark text-light p-4 mb-4 rounded">
+        <!-- Fiat and Total Balance Section -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+            <div class="d-flex gap-4 flex-column flex-md-row mb-3 mb-md-0">
+                <div>
+                    <h5 class="m-0 text-white">Total Balance</h5>
+                    <p class="fs-3 fw-bold text-white">$287,612</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Section -->
+        <div class="row">
+            <div class="col-md-2 col-6 mb-3">
+                <div class="border-top border-primary border-5 pt-2">
+                    <p class="small text-white fw-normal">Total Sales</p>
+                    <p class="fw-bold text-white">
+                        <span>$150000</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-3">
+                <div class="border-top border-danger border-5 pt-2">
+                    <p class="small text-white fw-normal">Pending Order</p>
+                    <p class="fw-bold text-white">256</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-3">
+                <div class="border-top border-warning border-5 pt-2">
+                    <p class="small text-white fw-normal">Customers</p>
+                    <p class="fw-bold text-white">
+                        <span>@Users.Count</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-3">
+                <div class="border-top border-secondary border-5 pt-2">
+                    <p class="small text-white fw-normal">Products</p>
+                    <p class="fw-bold text-white">@Model.Count</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-3">
+                <div class="border-top border-success border-5 pt-2">
+                    <p class="small text-white fw-normal">Orders</p>
+                    <p class="fw-bold text-white">1973</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4 rounded">
+        <div class="col-lg-12 col-xl-6 mt-2">
+            <div class="card p-3 bg-dark text-white">
+                <div class="card-body">
+                    <!-- Header Section with Manage Orders and Button -->
+                    <div class="d-flex justify-content-between mb-4">
+                        <h5 class="text-white">Manage Product</h5>
+                        <div>
+                            <a asp-action="Index" asp-controller="Product" class="m-0 small btn btn-primary text-white ">All Products</a>
+                            <i class="bi bi-arrow-right"></i>
+                    </div>
+                    </div>
+
+                    <!-- Responsive Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover text-white table-dark" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Discount</th>
+                                    <th scope="col">Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var product in Model.Data)
+                                {
+                                 <tr>
+                                        <td>@(product.Name.Length > 10 ? product.Name.Substring(0, 10) + "..." : product.Name)</td>
+                                        <td>
+
+                                            @{
+                                                var fileName = System.IO.Path.GetFileName(product.PictureUrl);
+                                                var productImagePath = System.IO.Path.Combine(WebHostEnvironment.WebRootPath, "Images/products", fileName);
+
+
+                                                if (!string.IsNullOrEmpty(product.PictureUrl) && System.IO.File.Exists(productImagePath))
+                                                {
+
+
+                                                    <img class="prod_img" src="@product.PictureUrl" width="50" height="50" />
+                                                }
+                                                else
+                                                {
+                                                    <img class="prod_img" src="~/Images/images.png" width="50" height="50" />
+
+                                                }
+                                            }
+                                        </td>
+
+                                     <td>@product.PriceBeforeDiscount</td>
+                                     <td>@product.Discount</td>
+                                     <td>@product.Count</td>
+                                 </tr>   
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-xl-6 mt-2">
+                <div class="card p-3 bg-dark text-white">
+                    <div class="card-body">
+                        <!-- Header Section with Manage Orders and Button -->
+                    <div class="d-flex justify-content-between mb-4">
+                            <h5 class="text-white">Manage Users</h5>
+
+                                <a  asp-action="Index" asp-controller="User" class="m-0 small btn btn-primary text-white">All Users</a>
+                            
+                        </div>
+
+                        <!-- Responsive Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover text-white table-dark" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">UserName</th>
+                                        <th scope="col">Country</th>
+                                        <th scope="col">City</th>
+                                        <th scope="col">Street</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                               @if(Users != null)
+                                {
+
+                                
+                                @foreach(var user in Users.Data)
+                                {
+                                   <tr>
+                                       <td>@user.UserName</td>
+                                       <td>@user.Country</td>
+                                       <td>@user.City</td>
+                                       <td>@user.Street</td>
+                                   </tr>
+                                }
+                                }
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+  
+</div>

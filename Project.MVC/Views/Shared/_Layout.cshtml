@@ -1,0 +1,94 @@
+﻿@inject IHttpContextAccessor _contextAccessor
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]- Store</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="~/css/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="~/Project.MVC.styles.css" asp-append-version="true" />
+    <link   rel="stylesheet"  href="~/toastr.js/toastr.css" />
+
+
+</head>
+<body>
+    <header>
+          @{
+                    var accessToken = _contextAccessor.HttpContext.Session.GetString("AccessToken");
+                }
+                @if(!string.IsNullOrEmpty(accessToken))
+                {
+                  
+        <span id="hamburger-icon">&#9776;</span>
+        <nav id="left-navbar" class="navbar navbar-light bg-light-subtle flex-md-column justify-content-between vh-100">
+            <span id="close-icon">&times;</span>
+            <ul class="nav flex-column w-100">
+     
+
+                @* Add logic for rendering navigation items based on session token *@
+                <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Brand" asp-action="Index">Brand</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
+                    </li>   
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Order</a>
+                    </li>
+         <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User</a>
+                    </li>
+            <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                    </li>
+   
+            </ul>
+
+            <ul class="nav flex-column w-100">
+                @if (!string.IsNullOrEmpty(accessToken))
+                {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-action="ChangePassword" asp-controller="User"> Change Password</a>
+                        </li>
+
+                        <li class="nav-item">
+                        <a class="nav-link" asp-action="Logout" asp-controller="Account">Logout</a>
+                    </li>
+                }
+            
+            </ul>
+        </nav>
+                }
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            <partial name="_Toastr" />
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+            <script src="~/toastr.js/toastr.mim.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

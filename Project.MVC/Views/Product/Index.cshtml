@@ -1,0 +1,277 @@
+﻿@{
+    Layout = "~/Views/Shared/_ProductLayout.cshtml";
+}
+
+@using Project.API.Helpers
+@using Project.BLL.Dtos.Product
+@{
+    ViewData["Title"] = "Product List";
+}
+@model List<ProductsToReturnDto>
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+@{
+    // Access the Search, BrandId, and CategoryId query parameters using HttpContextAccessor
+    string searchValue = HttpContextAccessor.HttpContext.Request.Query["Search"].FirstOrDefault() ?? "";
+    string brandId = HttpContextAccessor.HttpContext.Request.Query["BrandId"].FirstOrDefault() ?? "";
+    string categoryId = HttpContextAccessor.HttpContext.Request.Query["CategoryId"].FirstOrDefault() ?? "";
+    int pageIndex = ViewBag.PageIndex;
+    int pageSize = ViewBag.PageSize;
+    int totalPages = ViewBag.TotalPages;
+}
+
+<div class="container-fluid p-2">
+    <!-- Search and Filter Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card row bg-dark">
+                <h5 class="text-white mb-2 mb-md-0">Products List</h5>
+
+                <div class="card-header col-12 text-white d-flex flex-column flex-md-row justify-content-between align-items-center">
+
+                    <!-- Search Input and Filters -->
+                    <form method="get" class="d-flex flex-column flex-md-row p-2 mb-1 w-100">
+                        <input type="search" name="Search" value="@searchValue" class="form-control me-2 mb-2 mb-md-0 rounded-5 text-white" placeholder="Search Products..." aria-label="Search" />
+
+                        <!-- Brand Filter -->
+                        <select name="BrandId" class="form-select text-white mb-2 mb-md-0 ms-md-2">
+                                    <option value="">Brands</option>
+                                    @{
+                                        var brands = ViewBag.Brands as List<Brand>;
+                                        if (brands != null)
+                                        {
+                                            foreach (var brand in brands)
+                                            {
+                                                if (brandId == brand.Id.ToString())
+                                                {
+                                                    <option value="@brand.Id" selected>
+                                                        @brand.Name
+                                                    </option>
+                                                }
+                                                else
+                                                {
+
+                                                    <option value="@brand.Id">
+                                                        @brand.Name
+                                                    </option>
+                                                }
+
+                                            }
+                                        }
+                                    }
+                        </select>
+
+                        <!-- Category Filter -->
+                        <select name="CategoryId" class="form-select text-white ms-md-2 mb-2 mb-md-0">
+                                    <option value="">Categories</option>
+                                    @{
+                                        var categories = ViewBag.Categories as List<Category>;
+                                        if (categories != null)
+                                        {
+                                            foreach (var category in categories)
+                                            {
+                                                if (categoryId == category.Id.ToString())
+                                                {
+                                                    <option value="@category.Id" selected>@category.Name</option>
+
+                                                }
+                                                else
+                                                {
+                                                    <option value="@category.Id">@category.Name</option>
+
+                                                }
+
+                                            }
+                                        }
+                                    }
+                        </select>
+
+                        <button type="submit" class="btn btn-info ms-md-2">Filter</button>
+                    </form>
+
+                    <a asp-action="Create" >
+                        <img src="~/Images/plus.png" width="30" height="30"/>
+                    </a>
+                </div>
+
+                <div class="card-body col-12">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Image</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Net Price</th>
+                                <th>Quantity</th>
+                                <th>Brand</th>
+                                <th>Category</th>
+                                <th>Images</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model)
+                            {
+                                <tr>
+                                    <td>@product.Name</td>
+
+                                    <td>
+                                        @{
+                                            var fileName = System.IO.Path.GetFileName(product.PictureUrl);
+                                            var productImagePath = System.IO.Path.Combine(WebHostEnvironment.WebRootPath, "Images/products", fileName);
+
+
+                                            if (!string.IsNullOrEmpty(product.PictureUrl) && System.IO.File.Exists(productImagePath))
+                                            {
+
+
+                                                <img class="prod_img" src="@product.PictureUrl" width="50" height="50" />
+                                            }
+                                            else
+                                            {
+                                                   <img class="prod_img" src="~/Images/images.png" width="50" height="50" /> 
+ 
+                                            }
+                                        }
+                                       </td>
+                                     
+                                        <td>@Math.Round(product.PriceBeforeDiscount , 2)</td>
+                                    <td>@Math.Round(product.Discount,0) %</td>
+                                    <td>@Math.Round(product.PriceAfterDiscount,2)</td>
+                                    <td>@product.Count</td>
+                                    <td>@product.Brand</td>
+                                    <td>@product.Category</td>
+                                    <td>
+                                        @if (product.Images != null && product.Images.Any())
+                                        {
+                                            foreach (var item in product.Images)
+                                            {
+                                                var fileName1= System.IO.Path.GetFileName(item.Name);
+                                                var productImagePath1 = System.IO.Path.Combine(WebHostEnvironment.WebRootPath, "Images/products", fileName1);
+
+                                                if (System.IO.File.Exists(productImagePath1))
+                                                {
+                                                    <img src="@item.Name" width="30" height="30" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Images/images.png" width="30" height="30" />
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Images/images.png" width="30" height="30" />
+                                        }
+
+                                    </td>
+                                    <td>
+                                        <a asp-route-id="@product.Id" asp-action="Edit">
+                                            <img src="~/images/edit.png" width="30" height="30" />
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-id="@product.Id" class="js-delete">
+                                            <img src="~/images/trash.png" width="30" height="30" />
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination Controls -->
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="page-item @(pageIndex <= 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { PageIndex = pageIndex - 1, PageSize = pageSize })" tabindex="-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" /></svg>
+                                Previous
+                            </a>
+                        </div>
+
+                        <div class="btn-group me-2">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center flex-wrap">
+                                    @if (totalPages <= 10)
+                                    {
+                                        // Show all pages if total pages <= 10
+                                        @for (var i = 1; i <= totalPages; i++)
+                                        {
+                                            <li class="page-item @(i == pageIndex ? "active" : "")">
+                                                <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, PageSize = pageSize  ,CategoryId=categoryId ,Search=searchValue , BrandId=brandId})">@i</a>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var startPage = Math.Max(1, pageIndex - 2);
+                                        var endPage = Math.Min(totalPages, pageIndex + 2);
+
+                                        if (startPage > 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("Index", new { PageIndex = 1, PageSize = pageSize })">1</a>
+                                            </li>
+                                            if (startPage > 2)
+                                            {
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">...</span>
+                                                </li>
+                                            }
+                                        }
+
+                                        for (var i = startPage; i <= endPage; i++)
+                                        {
+                                            <li class="page-item @(i == pageIndex ? "active" : "")">
+                                                <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, PageSize = pageSize })">@i</a>
+                                            </li>
+                                        }
+
+                                        if (endPage < totalPages)
+                                        {
+                                            if (endPage < totalPages - 1)
+                                            {
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">...</span>
+                                                </li>
+                                            }
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("Index", new { PageIndex = totalPages, PageSize = pageSize })">@totalPages</a>
+                                            </li>
+                                        }
+                                    }
+
+                                    <!-- Next Button -->
+                                    <li class="page-item @(pageIndex >= totalPages ? "disabled" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = pageIndex + 1, PageSize = pageSize })" aria-label="Next">
+                                            <span aria-hidden="true">Next &raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+
+   <script src="~/js/product.js" asp-append-version="true"></script>
+
+
+
+}

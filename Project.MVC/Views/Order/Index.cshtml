@@ -1,0 +1,245 @@
+﻿@using Project.API.Helpers
+@using Project.BLL.Dtos
+@{
+    Layout = "~/Views/Shared/_ProductLayout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Order List";
+}
+@model IReadOnlyList<OrderToReturnDto>
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+@{
+    string searchValue =HttpContextAccessor.HttpContext.Request.Query["Search"].FirstOrDefault() ?? "";
+    int pageIndex = ViewBag.PageIndex;
+    int pageSize = ViewBag.PageSize;
+    int totalPages = ViewBag.TotalPages;
+    string Status = HttpContextAccessor.HttpContext.Request.Query["Status"].FirstOrDefault() ?? "";
+    string Tracking = HttpContextAccessor.HttpContext.Request.Query["Tracking"].FirstOrDefault() ?? "";
+}
+
+<div class="container-fluid  mt-5">
+    <!-- Search and Filter Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card row bg-dark">
+                <h5 class="text-white mb-2 mb-md-0 p-2">Orders List</h5>
+
+                <div class="card-header col-12 text-white d-flex flex-column flex-md-row justify-content-between align-items-center">
+
+                    <form method="get" class="d-flex flex-column flex-md-row p-2 mb-1 w-100">
+                        <input type="search" name="Search" value="@searchValue" class="form-control me-2 mb-2 mb-md-0 rounded-5 text-white" placeholder="Search By Email..." aria-label="Search" />
+                        <select name="Status" class="form-select text-white mb-2 mb-md-0 ms-md-2">
+                            <option value="">Status</option>
+
+                            @foreach (var status in (Dictionary<int, string>)ViewBag.Status)
+                            {
+                                @if (Status == status.Key.ToString()){
+                                    <option value="@status.Key" selected>
+                                        @status.Value
+                                        
+                                    </option>
+                                }
+                                else
+                                {
+                                     <option value="@status.Key" >@status.Value
+                                    </option>
+                                    }
+
+                            }
+                            </select>
+
+
+
+
+
+                            <select name="Tracking" class="form-select text-white mb-2 mb-md-0 ms-md-2">
+                            <option value="">Tracking</option>
+                            @foreach (var tracking in (Dictionary<int, string>)ViewBag.Tracking)
+                            {
+                                @if (Tracking == tracking.Key.ToString())
+                                {
+                                    <option value="@tracking.Key" selected>
+                                        @tracking.Value
+
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@tracking.Key">
+                                        @tracking.Value
+                                    </option>
+                                }
+
+                            }
+                            </select>
+                        <button type="submit" class="btn btn-info ms-md-2">Filter</button>
+                    </form>
+
+                </div>
+
+                <div class="card-body col-12">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Buyer Email</th>
+                                <th>Order Date</th>
+                                <td>Status</td>
+                                <th>Tracking</th>
+                                <th>Delivery Method</th>
+                                <th>Total</th>
+                                <th></th>
+                                <th></th>
+                             
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var order in Model)
+                            {
+                                <tr>
+                              <td>@order.ShippingAddress.FirstName</td>
+                              <td>@order.ShippingAddress.LastName</td>
+                                <td>@order.BuyerEmail</td>
+                                <td>@order.OrderDate.Date</td>
+                                    @if (order.Status == "Pending")
+                                    {
+                                        <td>
+                                            <span class="badge text-dark rounded-pill bg-warning">@order.Status</span>
+                                        </td>
+                                    }
+                                    else if (order.Status=="Payment Failed")
+                                    {
+                                        <td>
+                                            <span class="badge rounded-pill bg-danger">@order.Status</span>
+                                        </td>
+                                    }else{
+                                        <td>
+                                            <span class="badge rounded-pill bg-success">@order.Status</span>
+                                        </td>
+                                    }
+                                  @if (order.OrderTrackingStatus == "In Stock")
+                                    {
+                                        <td>
+                                            <span class="badge rounded-pill text-primary">@order.OrderTrackingStatus</span>
+                                        </td>
+                                    }
+                                    else if (order.OrderTrackingStatus == "Shipped")
+                                    {
+                                        <td>
+                                            <span class="badge rounded-pill text-success">@order.OrderTrackingStatus</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span class="badge rounded-pill text-warning">@order.OrderTrackingStatus</span>
+                                        </td>
+                                    }
+
+                                    <td>@order.DeliveryMethod</td>
+                          
+                                <td>@order.Total</td>
+                                    <td><a asp-route-id="@order.Id" asp-action="Details"><img src="/Images/file_1150643.png" width="30" height="30"></a></td>
+                                    <td><a asp-route-id="@order.Id" asp-action="Update"><img src="/Images/updated_5625789.png" width="30" height="30"></a></td>
+                              </tr>
+                              
+                            }
+
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination Controls -->
+                   <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="page-item @(pageIndex <= 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { PageIndex = pageIndex - 1, PageSize = pageSize  })" tabindex="-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" /></svg>
+                                Previous
+                            </a>
+                        </div> 
+
+                        <div class="btn-group me-2">
+                              <nav aria-label="Page navigation">
+                                  <ul class="pagination justify-content-center flex-wrap">
+                                      @if (totalPages <= 10)
+                                      {
+                                          @for (var i = 1; i <= totalPages; i++)
+                                          {
+                                              <li class="page-item @(i == pageIndex ? "active" : "")">
+                                                <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, PageSize = pageSize ,Search=searchValue ,Status = Status , Tracking = Tracking })">@i</a>
+                                              </li>
+                                          }
+                                      }
+                                      else
+                                      {
+                                          var startPage = Math.Max(1, pageIndex - 2);
+                                          var endPage = Math.Min(totalPages, pageIndex + 2);
+
+                                          if (startPage > 1)
+                                          {
+                                              <li class="page-item">
+                                                  <a class="page-link" href="@Url.Action("Index", new { PageIndex = 1, PageSize = pageSize })">1</a>
+                                              </li>
+                                              if (startPage > 2)
+                                              {
+                                                  <li class="page-item disabled">
+                                                      <span class="page-link">...</span>
+                                                  </li>
+                                              }
+                                          }
+
+                                          for (var i = startPage; i <= endPage; i++)
+                                          {
+                                              <li class="page-item @(i == pageIndex ? "active" : "")">
+                                                  <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, PageSize = pageSize })">@i</a>
+                                              </li>
+                                          }
+
+                                          if (endPage < totalPages)
+                                          {
+                                              if (endPage < totalPages - 1)
+                                              {
+                                                  <li class="page-item disabled">
+                                                      <span class="page-link">...</span>
+                                                  </li>
+                                              }
+                                              <li class="page-item">
+                                                  <a class="page-link" href="@Url.Action("Index", new { PageIndex = totalPages, PageSize = pageSize })">@totalPages</a>
+                                              </li>
+                                          }
+                                      }
+
+                                      <!-- Next Button -->
+                                      <li class="page-item @(pageIndex >= totalPages ? "disabled" : "")">
+                                          <a class="page-link" href="@Url.Action("Index", new { PageIndex = pageIndex + 1, PageSize = pageSize  })" aria-label="Next">
+                                              <span aria-hidden="true">Next &raquo;</span>
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </nav>
+                          </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+
+    <script src="~/js/product.js" asp-append-version="true"></script>
+
+
+
+}

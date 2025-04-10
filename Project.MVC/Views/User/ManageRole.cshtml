@@ -1,0 +1,52 @@
+﻿@using Project.BLL.Dtos.Authorization
+@model ManageUserRoles
+@{
+    ViewData["Title"] = "Manage User";
+}
+<div class="addProd container bg-dark shadow m-4">
+    <h1 class="text-white text-center m-4">
+        All Roles For @Model.username
+    </h1>
+
+<div class="form-group m-auto w-50">
+
+     
+        <form method="post" asp-action="UpdateRole">
+     <input  asp-for="UserId"  hidden />
+
+            <select multiple="multiple" asp-for="SelectedRoleIds" class="form-control text-white">
+            @{
+                foreach (var role in Model.Roles)
+                {
+                   
+                    var selectuserRole = role.HasRole;
+                    @if (selectuserRole)
+                    {
+                        <option value="@role.RoleId" selected>@role.RoleName</option>
+
+                    }
+                    else{
+                        <option value="@role.RoleId" >@role.RoleName</option>
+
+                    }
+
+                
+                
+
+
+            }
+        }
+        }
+        </select>
+
+
+
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-cancel me-3 btn-lg">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">Save</button>
+            </div>
+        </form>
+</div>
+
+</

@@ -1,0 +1,43 @@
+﻿@using Project.BLL.Dtos.Authorization
+@model EditRoleDto
+@{
+    ViewData["Title"] = "Update Role";
+}
+
+<div class="addProd container bg-dark shadow m-4">
+
+    <h2 class="text-white">Update Role</h2>
+    <form method="post" asp-action="EditRole">
+        <input  asp-for="Id"  hidden/>
+        <div class="row">
+            <div class="col-6 m-auto mb-2">
+                <div>
+                    <label asp-for="RoleName" class="form-label text-white mt-4"></label>
+                    <input asp-for="RoleName" class="form-control text-white bg-dark" placeholder="Enter Role">
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                    @if (ViewBag.error != null)
+                    {
+
+                        <span class="text-danger mb-3 text-center fs-5">
+                            @ViewBag.error
+                        </span>
+
+
+                    }
+                 
+                </div>
+            </div>
+
+
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-cancel me-3 btn-lg">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">Save</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+</div>
